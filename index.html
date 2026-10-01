@@ -229,7 +229,7 @@
 
 const K='unios_local_cache_v1';
 const SUPABASE_URL='https://mmbitfenzovzzdeatbpt.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY='PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_mbd5SUlqUn9bT8TwUaV6KA_4cknH2dT';
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 let S={tasks:[],notes:[],grades:[]},editing=null,sample=null,wk=0,user=null,saveTimer=null;
 try{const r=localStorage.getItem(K);if(r)S=JSON.parse(r)}catch(e){}
