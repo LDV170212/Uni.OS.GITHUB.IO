@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UniOS</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f5f7fb;--panel:#ffffff;--ink:#172033;--muted:#687386;--line:#e5e9f0;--primary:#4f46e5;--primary2:#6366f1;--soft:#eef0ff;--danger:#dc5a67;--warn:#d99a2b;--ok:#2f9e72;--shadow:0 8px 30px rgba(23,32,51,.06);box-sizing:border-box}
+*{box-sizing:inherit}html,body{margin:0}body{background:var(--bg);color:var(--ink);font:15px/1.5 "DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.wrap{max-width:1180px;margin:0 auto;padding:28px 22px 56px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:30px}.brand{display:flex;align-items:center;gap:12px}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:white;display:grid;place-items:center;font-weight:800;letter-spacing:-.04em;box-shadow:0 6px 18px rgba(79,70,229,.22)}.brand h1{font:800 1.2rem "Manrope",sans-serif;letter-spacing:-.03em;margin:0}.brand span{display:block;color:var(--muted);font-size:.75rem;margin-top:1px}.top-actions{display:flex;gap:8px;align-items:center}.top-actions button{background:var(--panel);border:1px solid var(--line);color:var(--muted);border-radius:10px;padding:8px 12px;font-weight:600}
+.hero{display:flex;justify-content:space-between;align-items:end;gap:25px;margin-bottom:22px}.hero h2{font:800 2rem "Manrope",sans-serif;letter-spacing:-.045em;margin:0 0 5px}.hero p{margin:0;color:var(--muted)}.date{font-size:.86rem;color:var(--muted);white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}.stat-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow)}.stat-card .label{font-size:.78rem;color:var(--muted);font-weight:600}.stat-card .value{font:800 1.55rem "Manrope",sans-serif;margin-top:3px;letter-spacing:-.04em}.stat-card .hint{font-size:.74rem;color:var(--muted);margin-top:2px}
+.ai{background:#171d33;color:#fff;border-radius:20px;padding:20px 22px;margin-bottom:22px;box-shadow:0 12px 34px rgba(23,29,51,.12)}.ai-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}.ai-title{display:flex;align-items:center;gap:10px}.ai-badge{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#818cf8,#a78bfa);display:grid;place-items:center;font-size:.85rem;font-weight:800}.ai h2{font:700 1rem "Manrope",sans-serif;margin:0}.ai small{color:#aeb7cf}.ask{display:flex;gap:8px}.ask input{flex:1;min-width:0;border:1px solid #343c58;background:#202742;color:#fff;border-radius:11px;padding:11px 13px;outline:none}.ask input::placeholder{color:#8d96b0}.ask button{background:#fff;color:#242a43;border:0;border-radius:11px;padding:0 18px;font-weight:700}.chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}.chips button{background:#202742;color:#dce2f4;border:1px solid #3a4260;border-radius:999px;padding:6px 11px;font-size:.78rem}#out{margin-top:12px;white-space:pre-wrap;line-height:1.55;background:#202742;border-radius:11px;padding:12px;display:none;color:#e8ebf4}
+.section{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);min-width:0}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.section h2{font:700 1rem "Manrope",sans-serif;margin:0;letter-spacing:-.02em}.section-sub{font-size:.78rem;color:var(--muted)}.focus{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:22px}.clock{font:800 2rem "Manrope",sans-serif;letter-spacing:-.05em;min-width:4ch}.focus select{border:1px solid var(--line);background:#fff;border-radius:9px;padding:8px;color:var(--ink)}.btn{background:var(--primary);color:#fff;border:0;border-radius:10px;padding:9px 13px;font-weight:700;box-shadow:0 5px 12px rgba(79,70,229,.15)}.ghost{background:none;border:0;color:var(--muted);cursor:pointer;padding:4px 6px}.ghost:hover{color:var(--danger)}
+.cal-wrap{margin-bottom:22px}.calhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:8px}.cal-nav{display:flex;gap:7px;align-items:center}.cal-nav button{background:#fff;border:1px solid var(--line);border-radius:9px;padding:6px 10px;color:var(--muted)}.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}.day{border:1px solid var(--line);border-radius:11px;padding:9px;min-height:92px;background:#fbfcfe}.day.today{border-color:var(--primary);box-shadow:0 0 0 2px rgba(79,70,229,.08);background:#f8f8ff}.day h3{margin:0 0 7px;font-size:.75rem;color:var(--muted)}.ev{font-size:.72rem;border-radius:6px;padding:3px 6px;margin-bottom:4px;color:#fff;overflow-wrap:anywhere}.ev.done{opacity:.45;text-decoration:line-through}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}.toolbar input,.toolbar select,.add input,.add select,.add textarea{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:10px;padding:9px 11px;outline:none}.toolbar input:focus,.toolbar select:focus,.add input:focus,.add select:focus,.add textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.08)}.toolbar input{flex:1;min-width:220px}.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:16px}.full{grid-column:1/-1}
+.add{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}.add .full{grid-column:1/-1}.add textarea{min-height:78px;resize:vertical}.row{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-left-width:4px;border-radius:10px;margin-bottom:8px;background:#fff}.row.high{border-left-color:var(--danger)}.row.med{border-left-color:var(--warn)}.row.low{border-left-color:var(--ok)}.row.done{opacity:.5}.row.done .t{text-decoration:line-through}.chk{width:21px;height:21px;border-radius:50%;border:2px solid #aab3c3;background:none;cursor:pointer;flex:none;color:#fff;font-size:12px;line-height:1}.done .chk{background:var(--primary);border-color:var(--primary)}.grow{flex:1;min-width:0}.t{font-weight:700;overflow-wrap:anywhere}.meta,.stat{font-size:.8rem;color:var(--muted)}.late{color:var(--danger);font-weight:700}.soon{color:var(--warn);font-weight:700}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}.note{border:1px solid var(--line);border-radius:10px;padding:11px;margin-bottom:8px;background:#fff}.note .b{white-space:pre-wrap;overflow-wrap:anywhere;margin:5px 0;max-height:170px;overflow-y:auto;color:#414b5f}.empty{color:var(--muted);padding:8px 2px;font-size:.9rem}.tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.gm{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:9px}.gm .gr{display:flex;gap:10px;align-items:center;font-size:.9rem}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(99,102,241,.3);outline-offset:2px}
+@media(max-width:850px){.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.full{grid-column:auto}.cal{grid-template-columns:repeat(2,1fr)}.cal-wrap .section{overflow:hidden}}@media(max-width:600px){.wrap{padding:20px 14px 40px}.topbar{margin-bottom:22px}.hero{display:block}.date{margin-top:8px}.stats{grid-template-columns:1fr 1fr}.ask{display:block}.ask button{margin-top:8px;height:40px;width:100%}.cal{grid-template-columns:1fr}.add{grid-template-columns:1fr}.add .full{grid-column:auto}}
+
+
+/* ===== UNIOS V2 LANDING PAGE ===== */
+#landingPage{min-height:100vh;background:#f8fafc;color:#0f172a}
+.land-nav{max-width:1180px;margin:auto;padding:22px 28px;display:flex;align-items:center;justify-content:space-between}
+.land-brand{display:flex;align-items:center;gap:10px;font:800 20px Manrope,sans-serif}
+.land-mark{width:36px;height:36px;border-radius:11px;background:#172554;color:#fff;display:grid;place-items:center}
+.land-links{display:flex;gap:30px}
+.land-links a{color:#64748b;text-decoration:none;font-size:14px;font-weight:700}
+.land-login{background:#fff;border:1px solid #dfe5ee;border-radius:10px;padding:10px 17px;font-weight:700;cursor:pointer}
+.land-hero{max-width:1180px;margin:auto;padding:75px 28px 105px;display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.land-eyebrow,.land-label{font-size:12px;font-weight:800;letter-spacing:.12em;color:#4f46e5}
+.land-hero h1{font:800 clamp(52px,7vw,82px)/.95 Manrope,sans-serif;letter-spacing:-.06em;margin:18px 0}
+.land-hero h1 span{color:#4f46e5}
+.land-hero-copy>p{max-width:560px;color:#64748b;font-size:19px;line-height:1.7}
+.land-actions{display:flex;gap:12px;margin-top:30px}
+.land-primary,.land-secondary{padding:13px 20px;border-radius:11px;font-weight:800;cursor:pointer;text-decoration:none}
+.land-primary{border:0;background:#172554;color:#fff}
+.land-secondary{border:1px solid #dfe5ee;background:#fff;color:#172033}
+.product-preview{background:#fff;border:1px solid #e2e8f0;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(15,23,42,.12)}
+.preview-top{height:38px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;gap:6px;padding:0 14px}
+.preview-top i{width:8px;height:8px;border-radius:50%;background:#cbd5e1}
+.preview-body{display:grid;grid-template-columns:130px 1fr;min-height:390px}
+.preview-side{background:#f8fafc;padding:22px 14px}
+.preview-side strong{display:block;margin-bottom:26px}
+.preview-side div{padding:9px;border-radius:8px;color:#64748b;font-size:12px;margin-bottom:4px}
+.preview-side .active{background:#e0e7ff;color:#3730a3;font-weight:800}
+.preview-main{padding:28px}
+.preview-main small{color:#94a3b8;font-size:10px}
+.preview-main h3{font:800 24px Manrope,sans-serif;margin:9px 0 3px}
+.preview-main>p{color:#64748b;font-size:13px}
+.preview-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:22px 0}
+.preview-stat{padding:13px;background:#f8fafc;border-radius:10px}
+.preview-stat b,.preview-stat span{display:block}
+.preview-stat b{font:800 20px Manrope,sans-serif}
+.preview-stat span{font-size:10px;color:#64748b;margin-top:3px}
+.preview-task{padding:12px;border:1px solid #e2e8f0;border-radius:10px;margin-top:8px;font-size:12px}
+.preview-task em{float:right;color:#64748b;font-style:normal;font-size:10px}
+.land-section{max-width:1180px;margin:auto;padding:95px 28px}
+.land-heading{max-width:680px;margin-bottom:42px}
+.land-heading h2,.land-about h2,.land-cta h2{font:800 42px/1.05 Manrope,sans-serif;letter-spacing:-.045em;margin:13px 0}
+.land-heading p{color:#64748b;font-size:17px}
+.land-features{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.land-feature{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px;transition:.2s}
+.land-feature:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(15,23,42,.08)}
+.land-icon{width:42px;height:42px;border-radius:12px;background:#eef2ff;color:#4338ca;display:grid;place-items:center;font-weight:800}
+.land-feature h3{margin:22px 0 8px}
+.land-feature p{color:#64748b;line-height:1.65}
+.land-feature button{border:0;background:none;color:#4338ca;font-weight:800;padding:0;cursor:pointer}
+.land-demo{margin-top:24px;display:none;padding:18px;border-radius:12px;background:#f1f5f9;color:#475569;font-size:13px}
+.land-demo.show{display:block}
+.land-how{background:#172554;color:#fff}
+.land-how-inner{max-width:1180px;margin:auto;padding:95px 28px}
+.land-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.land-step{padding:25px;border:1px solid rgba(255,255,255,.12);border-radius:15px;background:rgba(255,255,255,.04)}
+.land-step span{color:#a5b4fc;font-weight:800}
+.land-step p{color:#cbd5e1;line-height:1.6}
+.land-about{max-width:900px;margin:auto;padding:95px 28px;display:grid;grid-template-columns:120px 1fr;gap:45px;align-items:start}
+.land-avatar{width:100px;height:100px;border-radius:50%;background:#4f46e5;color:#fff;display:grid;place-items:center;font:800 40px Manrope,sans-serif}
+.land-about p{color:#64748b;line-height:1.75}
+.land-cta{text-align:center;padding:105px 28px}
+.land-cta p{color:#64748b}
+.land-footer{max-width:1180px;margin:auto;padding:28px;display:flex;justify-content:space-between;border-top:1px solid #e2e8f0;color:#64748b;font-size:13px}
+@media(max-width:850px){.land-hero{grid-template-columns:1fr;padding-top:45px}.land-features,.land-steps{grid-template-columns:1fr}.land-about{grid-template-columns:1fr}.land-links{display:none}}
+@media(max-width:600px){.land-hero{padding-left:18px;padding-right:18px}.land-section,.land-how-inner,.land-about{padding-left:18px;padding-right:18px}.preview-body{grid-template-columns:1fr}.preview-side{display:none}}
+
+.auth-screen{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at top left,#eef0ff 0,#f5f7fb 38%,#f5f7fb 100%)}
+.auth-card{width:min(430px,100%);background:#fff;border:1px solid var(--line);border-radius:24px;padding:30px;box-shadow:0 18px 60px rgba(23,32,51,.10)}
+.auth-brand{display:flex;align-items:center;gap:12px;margin-bottom:24px}.auth-brand .logo{width:44px;height:44px}
+.auth-card h2{font:800 1.65rem "Manrope",sans-serif;letter-spacing:-.04em;margin:0 0 6px}.auth-card p{color:var(--muted);margin:0 0 20px}
+.auth-form{display:grid;gap:11px}.auth-form label{font-size:.78rem;font-weight:700;color:var(--muted)}.auth-form input{border:1px solid var(--line);background:#fff;border-radius:11px;padding:11px 12px;outline:none}.auth-form input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,.08)}
+.auth-submit{width:100%;margin-top:5px}.auth-switch{margin-top:15px;text-align:center;font-size:.82rem;color:var(--muted)}.auth-switch button{border:0;background:none;color:var(--primary);font-weight:700;padding:0}
+.auth-msg{display:none;padding:10px 12px;border-radius:10px;font-size:.82rem;margin-bottom:12px;background:#f5f7fb;color:var(--ink)}.auth-msg.error{background:#fff0f1;color:#a3313d}.auth-msg.ok{background:#edf9f3;color:#237552}
+.account{display:flex;align-items:center;gap:8px}.account-email{font-size:.76rem;color:var(--muted);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:600px){.auth-card{padding:24px}.account-email{display:none}}
+
+/* ===== UNIOS V3 / editorial SaaS landing ===== */
+:root{--v3-ink:#101312;--v3-paper:#f3f0e8;--v3-lime:#c7f36b;--v3-acid:#9fe870;--v3-muted:#747a73;--v3-line:#d9d7ce;--v3-dark:#111513;--v3-blue:#6c73ff}
+#landingPage{min-height:100vh;background:var(--v3-paper);color:var(--v3-ink);font-family:"DM Sans",sans-serif;overflow:hidden}
+.v3-nav{height:76px;display:flex;align-items:center;justify-content:space-between;max-width:1280px;margin:auto;padding:0 30px;border-bottom:1px solid rgba(16,19,18,.08);position:relative;z-index:20}
+.v3-brand{border:0;background:none;display:flex;align-items:center;gap:10px;font:800 18px Manrope,sans-serif;letter-spacing:-.04em;color:var(--v3-ink);cursor:pointer}.v3-logo{width:31px;height:31px;border-radius:8px;background:var(--v3-ink);color:var(--v3-lime);display:grid;place-items:center;font-weight:900}
+.v3-navlinks{display:flex;gap:26px}.v3-navlinks button,.v3-footer button{border:0;background:none;color:#5f645e;font-size:13px;font-weight:700;cursor:pointer}.v3-navlinks button:hover,.v3-footer button:hover{color:var(--v3-ink)}.v3-navright{display:flex;align-items:center;gap:12px}.v3-textbtn{border:0;background:none;font-weight:700;cursor:pointer}.v3-pill{border:0;background:var(--v3-ink);color:#fff;border-radius:999px;padding:11px 18px;font-weight:800;cursor:pointer;box-shadow:0 8px 18px rgba(16,19,18,.12)}.v3-pill:hover{transform:translateY(-1px)}.v3-big{padding:15px 21px}
+.v3-main{max-width:1280px;margin:auto}.v3-page{display:none}.v3-page.active{display:block}.v3-hero{min-height:730px;padding:74px 30px 80px;display:grid;grid-template-columns:.84fr 1.16fr;gap:30px;align-items:center}.v3-hero-copy{position:relative;z-index:4}.v3-kicker,.v3-page-hero>span,.v3-section-intro>span,.v3-about-grid>div>span{font-size:11px;letter-spacing:.16em;font-weight:900;color:#62685f}.v3-hero h1{font:800 clamp(58px,7vw,100px)/.89 Manrope,sans-serif;letter-spacing:-.075em;margin:18px 0 26px}.v3-hero h1 em{font-style:normal;color:#62685f}.v3-lead{font-size:18px;line-height:1.65;max-width:510px;color:#5d635d}.v3-hero-actions{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}.v3-outline{border:1px solid #bbbdb5;background:transparent;border-radius:999px;padding:15px 21px;font-weight:800;cursor:pointer}.v3-proof{display:flex;gap:18px;flex-wrap:wrap;margin-top:42px;color:#777c75;font-size:12px}.v3-proof b{color:var(--v3-ink);margin-right:5px}.v3-device-wrap{position:relative;min-height:520px;display:flex;align-items:center;justify-content:center}.v3-glow{position:absolute;width:480px;height:340px;background:radial-gradient(circle,#c7f36b 0%,rgba(199,243,107,.32) 38%,rgba(199,243,107,0) 72%);filter:blur(14px);transform:translateY(50px)}
+.v3-laptop{position:relative;width:min(650px,94%);transform:perspective(1500px) rotateX(5deg) rotateY(-7deg) rotateZ(-1deg);filter:drop-shadow(25px 35px 35px rgba(16,19,18,.22));z-index:2}.v3-screen-shell{background:#161a18;padding:12px 12px 16px;border-radius:20px 20px 7px 7px;border:1px solid #3c423d;box-shadow:inset 0 0 0 1px #080a09}.v3-screen{background:#f7f5ef;border-radius:10px;overflow:hidden;aspect-ratio:16/10}.v3-browser{height:27px;background:#e9e7df;display:flex;align-items:center;gap:10px;padding:0 10px;color:#7b8079;font-size:7px}.v3-dots{display:flex;gap:3px}.v3-dots i{width:5px;height:5px;border-radius:50%;background:#b2b4ac}.v3-browser-right{margin-left:auto}.v3-dashboard{display:grid;grid-template-columns:82px 1fr;height:calc(100% - 27px)}.v3-dashboard aside{background:#171b19;color:#8d948b;padding:12px 8px}.v3-mini-brand{font-size:8px;font-weight:900;color:#fff;margin-bottom:20px;display:flex;gap:4px;align-items:center}.v3-mini-brand span{background:var(--v3-lime);color:#151914;border-radius:3px;padding:2px 3px}.v3-side{font-size:6px;padding:7px 5px;border-radius:4px;margin-bottom:3px}.v3-side.active{background:#30362f;color:#d5f89b}.v3-dash-main{padding:18px}.v3-dash-top{display:flex;justify-content:space-between}.v3-dash-top small,.v3-metrics small,.v3-card-head span{font-size:6px;color:#969b93;letter-spacing:.08em}.v3-dash-top h3{font:800 15px Manrope,sans-serif;margin:4px 0}.v3-dash-top p{font-size:7px;color:#8b9088;margin:0}.v3-avatar{width:24px;height:24px;border-radius:50%;background:var(--v3-lime);display:grid;place-items:center;font-size:8px;font-weight:900}.v3-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:14px 0}.v3-metrics>div,.v3-dash-card{background:#fff;border:1px solid #e1dfd6;border-radius:7px;padding:8px}.v3-metrics b{display:block;font:800 17px Manrope,sans-serif;margin:3px 0}.v3-metrics span{font-size:6px;color:#8d928a}.v3-dash-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:6px}.v3-card-head{display:flex;justify-content:space-between;font-size:7px}.v3-taskline{display:flex;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid #efede7}.v3-taskline:last-child{border:0}.v3-taskline i{width:6px;height:6px;border-radius:50%;background:#d3ef87}.v3-taskline b{display:block;font-size:7px}.v3-taskline small{display:block;font-size:6px;color:#92978f}.v3-chart{height:70px;display:flex;align-items:end;gap:4px;padding:12px 5px 4px}.v3-chart i{flex:1;background:linear-gradient(to top,#c7f36b,#e6f9bf);border-radius:3px 3px 0 0}.v3-chart-label b{font-size:9px}.v3-chart-label span{font-size:6px;color:#8c9189;margin-left:3px}.v3-base{height:25px;background:linear-gradient(#858b86,#4d524f);clip-path:polygon(5% 0,95% 0,100% 55%,0 55%);border-radius:0 0 30px 30px;position:relative}.v3-keyboard{position:absolute;left:21%;right:21%;top:3px;height:8px;background:repeating-linear-gradient(90deg,#252a27 0 6px,transparent 6px 8px);opacity:.75}.v3-trackpad{position:absolute;left:43%;width:14%;height:6px;top:5px;border:1px solid #6c716d;border-radius:2px}.v3-float{position:absolute;z-index:5;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border:1px solid rgba(16,19,18,.12);border-radius:12px;padding:11px 14px;box-shadow:0 18px 30px rgba(16,19,18,.12)}.v3-float small{display:block;color:#8a9088;font-size:8px;font-weight:800;letter-spacing:.08em}.v3-float strong{display:block;font:800 19px Manrope,sans-serif;margin:2px 0}.v3-float span{font-size:9px;color:#6d736c}.v3-float-a{left:0;top:95px}.v3-float-b{right:0;bottom:90px}.v3-strip{background:var(--v3-ink);color:#fff;padding:70px 8%;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end}.v3-strip small{color:var(--v3-lime);font-size:10px;letter-spacing:.14em;font-weight:900}.v3-strip h2{font:800 clamp(32px,4vw,55px)/1 Manrope,sans-serif;letter-spacing:-.06em;margin:13px 0 0}.v3-strip p{color:#aeb3ac;font-size:16px;line-height:1.7;max-width:470px}.v3-editorial{padding:105px 8%;display:grid;grid-template-columns:1fr 1fr;gap:90px}.v3-section-intro h2{font:800 clamp(38px,5vw,65px)/.98 Manrope,sans-serif;letter-spacing:-.065em;margin:18px 0}.v3-editorial-copy{padding-top:35px}.v3-editorial-copy p{font-size:18px;line-height:1.75;color:#666c64}.v3-link{border:0;background:none;padding:0;font-weight:900;cursor:pointer;border-bottom:1px solid var(--v3-ink);padding-bottom:4px}
+.v3-page-hero{padding:95px 8% 65px;max-width:1050px}.v3-page-hero h2{font:800 clamp(46px,6vw,78px)/.94 Manrope,sans-serif;letter-spacing:-.07em;margin:17px 0 20px}.v3-page-hero p{max-width:650px;font-size:18px;line-height:1.7;color:#666c64}.v3-feature-grid{padding:0 8% 100px;display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#d8d6cd;border:1px solid #d8d6cd}.v3-feature-grid article{background:var(--v3-paper);padding:36px;min-height:310px}.v3-num{font-size:11px;color:#858a82;font-weight:900}.v3-feature-grid h3{font:800 31px Manrope,sans-serif;letter-spacing:-.04em;margin:35px 0 10px}.v3-feature-grid p{color:#686e66;line-height:1.65;max-width:450px}.v3-feature-ui{background:#fff;border:1px solid #dedcd3;padding:16px;margin-top:25px;display:grid;gap:3px}.v3-feature-ui b{font-size:9px;letter-spacing:.12em;color:#8b9089}.v3-feature-ui strong{font:800 17px Manrope,sans-serif}.v3-feature-ui small{color:#888e86}.v3-data-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;padding:0 8% 75px;align-items:center}.v3-data-diagram{height:430px;position:relative;background:#151916;border-radius:22px;overflow:hidden;box-shadow:0 25px 50px rgba(16,19,18,.15)}.v3-db-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:210px;height:145px;border:1px solid #4a5149;background:#20251f;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;box-shadow:0 0 0 8px rgba(199,243,107,.05),0 20px 50px rgba(0,0,0,.35)}.v3-db-core span{font-size:9px;color:var(--v3-lime);letter-spacing:.16em;font-weight:900}.v3-db-core strong{font:800 23px Manrope,sans-serif;margin:7px 0}.v3-db-core small{color:#aab1a8}.v3-db-node{position:absolute;width:150px;padding:12px;background:#f7f5ef;border-radius:10px;display:grid;gap:2px;box-shadow:0 12px 30px rgba(0,0,0,.18)}.v3-db-node small{font-size:8px;color:#777d75;letter-spacing:.1em}.v3-db-node b{font:800 13px Manrope,sans-serif}.v3-db-node span{font-size:9px;color:#7f857d}.n1{left:25px;top:45px}.n2{right:25px;top:170px}.n3{left:25px;bottom:45px}.v3-db-line{position:absolute;height:1px;background:linear-gradient(90deg,rgba(199,243,107,.15),var(--v3-lime),rgba(199,243,107,.15));transform-origin:left}.l1{width:205px;left:165px;top:120px;transform:rotate(20deg)}.l2{width:190px;right:155px;top:245px;transform:rotate(-20deg)}.l3{width:210px;left:165px;bottom:120px;transform:rotate(-18deg)}.v3-data-copy>span{font-size:10px;letter-spacing:.15em;font-weight:900;color:#777d75}.v3-data-copy h3{font:800 43px/.98 Manrope,sans-serif;letter-spacing:-.06em;margin:15px 0}.v3-data-copy p{color:#656b63;line-height:1.7}.v3-codecard{background:#151916;color:#fff;padding:18px;margin:25px 0;display:grid;gap:13px;border-radius:12px}.v3-codecard div{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid #2f352f;padding-bottom:9px}.v3-codecard div:last-child{border:0;padding-bottom:0}.v3-codecard span{font-size:9px;color:var(--v3-lime);letter-spacing:.12em}.v3-codecard b{font-size:12px}.v3-smallnote{font-size:13px!important;color:#858b83!important}.v3-principles{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--v3-line);border-bottom:1px solid var(--v3-line);margin:0 8% 100px}.v3-principles>div{padding:30px;border-right:1px solid var(--v3-line)}.v3-principles>div:last-child{border:0}.v3-principles b{font-size:11px;color:#777d75}.v3-principles h3{font:800 25px Manrope,sans-serif;margin:24px 0 7px}.v3-principles p{color:#686e66;line-height:1.6}.v3-security-grid{margin:0 8% 100px;display:grid;grid-template-columns:repeat(2,1fr);border-top:1px solid var(--v3-line);border-left:1px solid var(--v3-line)}.v3-security-item{padding:23px;border-right:1px solid var(--v3-line);border-bottom:1px solid var(--v3-line);display:grid;grid-template-columns:35px 1fr;column-gap:8px}.v3-security-item>b{grid-row:1/3;font-size:11px;color:#8b9088}.v3-security-item span{font:800 16px Manrope,sans-serif}.v3-security-item small{color:#747a72;line-height:1.5;margin-top:5px}.v3-about-grid{padding:100px 8%;display:grid;grid-template-columns:1.15fr .85fr;gap:90px;align-items:center;min-height:650px}.v3-about-grid h2{font:800 clamp(48px,6vw,76px)/.94 Manrope,sans-serif;letter-spacing:-.07em;margin:18px 0 25px}.v3-about-grid p{font-size:17px;line-height:1.7;color:#656b63;max-width:620px}.v3-founder-card{background:#151916;color:#fff;padding:40px;border-radius:18px;min-height:380px;display:flex;flex-direction:column;justify-content:flex-end;box-shadow:20px 25px 50px rgba(16,19,18,.15)}.v3-founder-mark{width:70px;height:70px;border-radius:50%;background:var(--v3-lime);color:#151916;display:grid;place-items:center;font:900 25px Manrope,sans-serif;margin-bottom:auto}.v3-founder-card small{color:var(--v3-lime);font-size:9px;letter-spacing:.16em;font-weight:900}.v3-founder-card h3{font:800 42px Manrope,sans-serif;margin:9px 0}.v3-founder-card p{color:#aeb3ac;margin:0 0 25px}.v3-founder-line{height:1px;background:#343a34;margin-bottom:13px}.v3-founder-card>span{color:#8c928a;font-size:12px}.v3-price-card{margin:0 8% 120px;background:#151916;color:#fff;border-radius:18px;padding:55px;display:grid;grid-template-columns:1fr .55fr;gap:50px;align-items:center}.v3-price-card small{color:var(--v3-lime);font-size:9px;letter-spacing:.14em;font-weight:900}.v3-price-card h3{font:800 48px Manrope,sans-serif;letter-spacing:-.05em;margin:12px 0}.v3-price-card p,.v3-price-card li{color:#b0b6ae;line-height:1.65}.v3-price-card ul{padding-left:18px}.v3-price{border-left:1px solid #343a34;padding-left:50px;display:flex;flex-direction:column;align-items:flex-start}.v3-price>span{font:800 26px Manrope,sans-serif}.v3-price>strong{font:800 100px/.8 Manrope,sans-serif;letter-spacing:-.08em}.v3-price>small{color:#90968e;margin:13px 0 24px}.v3-footer{border-top:1px solid var(--v3-line);padding:28px 8%;display:flex;align-items:center;gap:18px;color:#7b8078}.v3-footer strong{color:var(--v3-ink);font:800 18px Manrope,sans-serif}.v3-footer div{margin-left:auto;display:flex;gap:18px}.v3-footer button:last-child{color:var(--v3-ink);font-weight:900}
+/* Re-skin authenticated dashboard */
+#app{background:var(--v3-paper)!important;color:var(--v3-ink)}#app .topbar{border-bottom:1px solid var(--v3-line);padding-bottom:18px}#app .logo{background:var(--v3-ink);box-shadow:none;color:var(--v3-lime)}#app .btn{background:var(--v3-ink);box-shadow:none}#app .ai{background:var(--v3-ink)}#app .stat-card,#app .section,#app .row,#app .note,#app .gm{box-shadow:none;border-color:var(--v3-line)}#app .stat-card .value{color:var(--v3-ink)}#app .day.today{border-color:#849e4f;background:#f7faee}#app .done .chk{background:var(--v3-ink);border-color:var(--v3-ink)}
+@media(max-width:900px){.v3-navlinks{display:none}.v3-hero{grid-template-columns:1fr;padding-top:50px}.v3-device-wrap{min-height:440px}.v3-float-a{left:2%}.v3-float-b{right:2%}.v3-strip,.v3-editorial,.v3-data-layout,.v3-about-grid{grid-template-columns:1fr;gap:40px}.v3-feature-grid,.v3-security-grid{grid-template-columns:1fr}.v3-principles{grid-template-columns:1fr}.v3-principles>div{border-right:0;border-bottom:1px solid var(--v3-line)}.v3-price-card{grid-template-columns:1fr}.v3-price{border-left:0;border-top:1px solid #343a34;padding:35px 0 0}.v3-footer{flex-wrap:wrap}.v3-footer div{margin-left:0;width:100%}}
+@media(max-width:600px){.v3-nav{padding:0 16px}.v3-navright .v3-textbtn{display:none}.v3-hero{padding:45px 18px 60px}.v3-hero h1{font-size:56px}.v3-lead{font-size:16px}.v3-device-wrap{min-height:340px}.v3-laptop{width:100%;transform:perspective(1000px) rotateX(3deg) rotateY(-3deg)}.v3-float{display:none}.v3-strip,.v3-editorial,.v3-data-layout,.v3-about-grid{padding-left:18px;padding-right:18px}.v3-page-hero{padding:60px 18px 40px}.v3-page-hero h2{font-size:48px}.v3-feature-grid,.v3-security-grid{margin-left:18px;margin-right:18px}.v3-principles{margin-left:18px;margin-right:18px}.v3-price-card{margin-left:18px;margin-right:18px;padding:30px}.v3-price>strong{font-size:78px}.v3-footer{padding:25px 18px}}
+
+</style>
+</head>
+<body>
+
+
+<div id="landingPage">
+  <nav class="v3-nav">
+    <button class="v3-brand" data-land="home"><span class="v3-logo">U</span><span>UniOS</span></button>
+    <div class="v3-navlinks">
+      <button data-land="solution">Solution</button>
+      <button data-land="data">Data</button>
+      <button data-land="security">Security</button>
+      <button data-land="about">About</button>
+      <button data-land="pricing">Pricing</button>
+    </div>
+    <div class="v3-navright"><button class="v3-textbtn" id="landingLogin">Log in</button><button class="v3-pill" id="landingSignup">Create account</button></div>
+  </nav>
+
+  <main class="v3-main">
+    <section class="v3-page active" data-page="home">
+      <div class="v3-hero">
+        <div class="v3-hero-copy">
+          <div class="v3-kicker">THE STUDENT OPERATING SYSTEM</div>
+          <h1>University work.<br><em>One place.</em></h1>
+          <p class="v3-lead">Deadlines, grades, notes, planning and AI support — connected to one personal student workspace.</p>
+          <div class="v3-hero-actions"><button class="v3-pill v3-big" id="landingSignupHero">Start building your workspace</button><button class="v3-outline v3-big" data-land="solution">Explore UniOS</button></div>
+          <div class="v3-proof"><span><b>01</b> Deadlines</span><span><b>02</b> Grades</span><span><b>03</b> Notes</span><span><b>04</b> Assistant</span></div>
+        </div>
+        <div class="v3-device-wrap">
+          <div class="v3-glow"></div>
+          <div class="v3-float v3-float-a"><small>THIS WEEK</small><strong>4 deadlines</strong><span>2 need attention</span></div>
+          <div class="v3-float v3-float-b"><small>CURRENT AVERAGE</small><strong>68.4%</strong><span>+2.1% this term</span></div>
+          <div class="v3-laptop">
+            <div class="v3-screen-shell"><div class="v3-screen">
+              <div class="v3-browser"><span class="v3-dots"><i></i><i></i><i></i></span><span>app.unios.student</span><span class="v3-browser-right">●</span></div>
+              <div class="v3-dashboard">
+                <aside><div class="v3-mini-brand"><span>U</span>UniOS</div><div class="v3-side active">Overview</div><div class="v3-side">Deadlines</div><div class="v3-side">Calendar</div><div class="v3-side">Grades</div><div class="v3-side">Notes</div><div class="v3-side">Assistant</div></aside>
+                <div class="v3-dash-main"><div class="v3-dash-top"><div><small>MONDAY · OCTOBER</small><h3>Good morning, Lucas.</h3><p>Here's what needs your attention.</p></div><div class="v3-avatar">L</div></div>
+                  <div class="v3-metrics"><div><small>OPEN</small><b>4</b><span>deadlines</span></div><div><small>THIS WEEK</small><b>2</b><span>due soon</span></div><div><small>AVERAGE</small><b>68%</b><span>current</span></div></div>
+                  <div class="v3-dash-grid"><div class="v3-dash-card"><div class="v3-card-head"><b>Priority</b><span>Today</span></div><div class="v3-taskline"><i></i><div><b>Sports Marketing essay</b><small>High · Friday</small></div></div><div class="v3-taskline"><i></i><div><b>Research presentation</b><small>Medium · Monday</small></div></div><div class="v3-taskline"><i></i><div><b>Read lecture 6</b><small>Low · No date</small></div></div></div><div class="v3-dash-card"><div class="v3-card-head"><b>Grade trend</b><span>Term</span></div><div class="v3-chart"><i style="height:30%"></i><i style="height:46%"></i><i style="height:42%"></i><i style="height:64%"></i><i style="height:57%"></i><i style="height:78%"></i><i style="height:86%"></i></div><div class="v3-chart-label"><b>68.4%</b><span>weighted average</span></div></div></div>
+                </div></div>
+              </div>
+            </div></div>
+            <div class="v3-base"><div class="v3-keyboard"></div><div class="v3-trackpad"></div></div>
+          </div>
+        </div>
+      </div>
+      <section class="v3-strip"><div><small>DESIGNED AROUND THE REAL STUDENT WORKFLOW</small><h2>Stop managing university from six different tabs.</h2></div><p>UniOS connects the information you already have into one private workspace — so the product can become more useful as you use it.</p></section>
+      <section class="v3-editorial"><div class="v3-section-intro"><span>01 / THE IDEA</span><h2>A workspace, not another productivity app.</h2></div><div class="v3-editorial-copy"><p>Most student tools solve one problem. UniOS is being built around the space between them: the relationship between a deadline, the mark attached to it, the notes behind it and the time you actually have to do the work.</p><button class="v3-link" data-land="data">See how the data connects →</button></div></section>
+    </section>
+
+    <section class="v3-page" data-page="solution">
+      <div class="v3-page-hero"><span>02 / SOLUTION</span><h2>Everything a student needs to see what matters next.</h2><p>Each part of UniOS is useful on its own. Together, they form a single student workspace.</p></div>
+      <div class="v3-feature-grid">
+        <article><span class="v3-num">01</span><h3>Deadlines</h3><p>Capture assignments, modules, priorities and due dates. UniOS turns them into a visible workload rather than a list you forget.</p><div class="v3-feature-ui"><b>Friday</b><strong>Sports Marketing Essay</strong><small>High priority · 2 days left</small></div></article>
+        <article><span class="v3-num">02</span><h3>Grades</h3><p>Track assessment weights and marks, see your running average and understand what remaining work can change.</p><div class="v3-feature-ui"><b>Current average</b><strong>68.4%</strong><small>Weighted from marked assessments</small></div></article>
+        <article><span class="v3-num">03</span><h3>Notes</h3><p>Keep module notes beside the work they relate to, rather than scattering them across documents and apps.</p><div class="v3-feature-ui"><b>SPORT MARKETING</b><strong>Lecture 6 — Sponsorship</strong><small>1,240 words · saved today</small></div></article>
+        <article><span class="v3-num">04</span><h3>Assistant</h3><p>The assistant can work from the student's own UniOS context rather than being a generic blank chat window.</p><div class="v3-feature-ui"><b>ASK UNIOS</b><strong>What should I work on tonight?</strong><small>Uses your deadlines, grades and notes</small></div></article>
+        <article><span class="v3-num">05</span><h3>Focus</h3><p>Choose a realistic session and work on one thing. The point is reducing the distance between planning and actually starting.</p><div class="v3-feature-ui"><b>FOCUS SESSION</b><strong>25:00</strong><small>Sports Marketing Essay</small></div></article>
+        <article><span class="v3-num">06</span><h3>Calendar</h3><p>A weekly view gives students a simple picture of what is coming without replacing their wider university calendar.</p><div class="v3-feature-ui"><b>THIS WEEK</b><strong>Mon — Sun</strong><small>4 tasks · 2 due soon</small></div></article>
+      </div>
+    </section>
+
+    <section class="v3-page" data-page="data">
+      <div class="v3-page-hero"><span>03 / DATA ARCHITECTURE</span><h2>The database is the foundation of UniOS.</h2><p>Every student's workspace should be private, persistent and available when they return — not just stored in one browser.</p></div>
+      <div class="v3-data-layout">
+        <div class="v3-data-diagram"><div class="v3-db-core"><span>SUPABASE</span><strong>UNIOS CLOUD</strong><small>Postgres database</small></div><div class="v3-db-line l1"></div><div class="v3-db-line l2"></div><div class="v3-db-line l3"></div><div class="v3-db-node n1"><small>USER A</small><b>Workspace A</b><span>user_id A</span></div><div class="v3-db-node n2"><small>USER B</small><b>Workspace B</b><span>user_id B</span></div><div class="v3-db-node n3"><small>USER C</small><b>Workspace C</b><span>user_id C</span></div></div>
+        <div class="v3-data-copy"><span>PRIVATE BY DESIGN</span><h3>One database. Separate student workspaces.</h3><p>UniOS does not need a separate database for every student. The application uses one cloud database and associates each workspace with the authenticated user's unique ID.</p><div class="v3-codecard"><div><span>TABLE</span><b>user_workspaces</b></div><div><span>KEY</span><b>user_id → auth.users.id</b></div><div><span>DATA</span><b>tasks · notes · grades</b></div><div><span>ACCESS</span><b>Row Level Security</b></div></div><p class="v3-smallnote">The current MVP stores a student's workspace as JSONB. A later production version can split this into dedicated tables for modules, deadlines, notes, grades, calendar events and study sessions.</p></div>
+      </div>
+      <div class="v3-principles"><div><b>01</b><h3>Persistent</h3><p>Sign in on another device and your workspace can be retrieved from the cloud.</p></div><div><b>02</b><h3>Isolated</h3><p>Queries are tied to the authenticated user's ID rather than a shared student dataset.</p></div><div><b>03</b><h3>Expandable</h3><p>The MVP data model can evolve into a richer relational structure as usage is validated.</p></div></div>
+    </section>
+
+    <section class="v3-page" data-page="security">
+      <div class="v3-page-hero"><span>04 / SECURITY CHECKLIST</span><h2>Security is a product requirement, not a final polish.</h2><p>These are the checks to work through before UniOS is treated as a production service.</p></div>
+      <div class="v3-security-grid">
+        <div class="v3-security-item"><b>01</b><span>Hide API keys</span><small>Never expose server/service-role secrets in client code.</small></div>
+        <div class="v3-security-item"><b>02</b><span>Check environment variables</span><small>Keep deployment configuration intentional and separate.</small></div>
+        <div class="v3-security-item"><b>03</b><span>Check keys in Git</span><small>Review repository history before production.</small></div>
+        <div class="v3-security-item"><b>04</b><span>Protect admin routes</span><small>Restrict privileged functionality to authorised users.</small></div>
+        <div class="v3-security-item"><b>05</b><span>Add authentication</span><small>Require an authenticated account for private workspace data.</small></div>
+        <div class="v3-security-item"><b>06</b><span>Check user permissions</span><small>Verify every sensitive operation is scoped to the right user.</small></div>
+        <div class="v3-security-item"><b>07</b><span>Sanitise user inputs</span><small>Treat user-entered text as untrusted data.</small></div>
+        <div class="v3-security-item"><b>08</b><span>Protect against XSS</span><small>Escape or safely render user content.</small></div>
+        <div class="v3-security-item"><b>09</b><span>SQL injection protection</span><small>Use parameterised/database APIs rather than string-built queries.</small></div>
+        <div class="v3-security-item"><b>10</b><span>Check database rules</span><small>Test Row Level Security against multiple accounts.</small></div>
+        <div class="v3-security-item"><b>11</b><span>Add rate limiting</span><small>Protect authentication and expensive endpoints from abuse.</small></div>
+        <div class="v3-security-item"><b>12</b><span>Set a spend cap</span><small>Control costs for AI, hosting and third-party services.</small></div>
+        <div class="v3-security-item"><b>13</b><span>Secure file uploads</span><small>Validate type, size, storage permissions and access.</small></div>
+        <div class="v3-security-item"><b>14</b><span>CSRF protection</span><small>Review state-changing requests if/when server routes are introduced.</small></div>
+        <div class="v3-security-item"><b>15</b><span>Check CORS settings</span><small>Allow only the origins the application actually needs.</small></div>
+        <div class="v3-security-item"><b>16</b><span>Enable HTTPS</span><small>Use secure transport for the production domain.</small></div>
+        <div class="v3-security-item"><b>17</b><span>Add security headers</span><small>Configure browser protections at the production edge.</small></div>
+        <div class="v3-security-item"><b>18</b><span>Secure cookies</span><small>Use appropriate secure, HttpOnly and SameSite settings where cookies apply.</small></div>
+        <div class="v3-security-item"><b>19</b><span>Disable debug mode</span><small>Do not expose internal errors or development tooling in production.</small></div>
+        <div class="v3-security-item"><b>20</b><span>Check production settings</span><small>Run a final environment, auth, database and deployment review.</small></div>
+      </div>
+    </section>
+
+    <section class="v3-page" data-page="about">
+      <div class="v3-about-grid"><div><span>05 / ABOUT</span><h2>Built from the student side of the problem.</h2><p>I'm Lucas, a final-year student at Leeds Beckett University. UniOS started with a simple observation: university information is everywhere, but the student's view of it often isn't.</p><p>The product is being developed as a working student project first — with real accounts, cloud data and a focus on learning what students actually use before trying to scale it.</p><button class="v3-pill" id="landingSignupAbout">Try the current build</button></div><div class="v3-founder-card"><div class="v3-founder-mark">L</div><small>FOUNDER / BUILDER</small><h3>Lucas</h3><p>Student · Business Development · Building UniOS alongside university.</p><div class="v3-founder-line"></div><span>Leeds, UK</span></div></div>
+    </section>
+
+    <section class="v3-page" data-page="pricing">
+      <div class="v3-page-hero"><span>06 / PRICING</span><h2>Simple enough to understand. Not pretending the market is validated yet.</h2><p>The current idea is a low-cost student subscription, but pricing should ultimately follow real usage and willingness to pay.</p></div>
+      <div class="v3-price-card"><div><small>EARLY PRODUCT DIRECTION</small><h3>UniOS Student</h3><p>One private workspace for deadlines, notes, grades, planning and assistant features.</p><ul><li>Cloud-saved student workspace</li><li>Personal deadlines and calendar</li><li>Grades and assessment tracking</li><li>Notes and focus tools</li><li>AI-assisted planning as the feature matures</li></ul></div><div class="v3-price"><span>£</span><strong>5</strong><small>/ month — proposed</small><button class="v3-pill v3-big" id="landingSignupPrice">Join the build</button></div></div>
+    </section>
+  </main>
+  <footer class="v3-footer"><strong>UniOS</strong><span>University, organised.</span><div><button data-land="security">Security</button><button data-land="about">About</button><button id="landingSignupFooter">Create account</button></div></footer>
+</div>
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="logo">U</div>
+      <div><h1 style="font:800 1.2rem Manrope,sans-serif;margin:0;letter-spacing:-.03em">UniOS</h1><span style="display:block;color:var(--muted);font-size:.75rem">Your university, in one place</span></div>
+    </div>
+    <h2 id="authTitle">Welcome back</h2>
+    <p id="authSubtitle">Log in to access your personal UniOS dashboard.</p>
+    <div id="authMsg" class="auth-msg"></div>
+    <form id="authForm" class="auth-form">
+      <div id="nameWrap" style="display:none">
+        <label for="authName">Your name</label>
+        <input id="authName" autocomplete="name" placeholder="e.g. Lucas">
+      </div>
+      <div>
+        <label for="authEmail">Email</label>
+        <input id="authEmail" type="email" autocomplete="email" required placeholder="you@example.com">
+      </div>
+      <div>
+        <label for="authPassword">Password</label>
+        <input id="authPassword" type="password" autocomplete="current-password" minlength="6" required placeholder="At least 6 characters">
+      </div>
+      <button id="authSubmit" class="btn auth-submit" type="submit">Log in</button>
+    </form>
+    <div class="auth-switch"><span id="authSwitchText">New to UniOS?</span> <button id="authSwitch" type="button">Create an account</button></div>
+  </div>
+</div>
+<div class="wrap" id="app" style="display:none">
+<header class="topbar">
+  <div class="brand"><div class="logo">U</div><div><h1>UniOS</h1><span>Your university, in one place</span></div></div>
+  <div class="top-actions"><div class="account"><span id="accountEmail" class="account-email"></span><button id="signOut">Sign out</button></div><button id="exp">Export data</button><button id="imp" title="Replaces your current UniOS data with a backup file">Import data</button><input type="file" id="file" accept=".json,application/json" hidden></div>
+</header>
+
+<div class="hero"><div><h2 id="welcomeHeading">Good to see you.</h2><p>Stay on top of deadlines, notes, grades and focused study.</p></div><div class="date" id="dateLabel"></div></div>
+
+<div class="stats">
+  <div class="stat-card"><div class="label">Open deadlines</div><div class="value" id="openStat">0</div><div class="hint">Tasks still to complete</div></div>
+  <div class="stat-card"><div class="label">Due this week</div><div class="value" id="weekStat">0</div><div class="hint">Keep these moving</div></div>
+  <div class="stat-card"><div class="label">Current average</div><div class="value" id="avgStat">—</div><div class="hint">Based on marked work</div></div>
+  <div class="stat-card"><div class="label">Saved notes</div><div class="value" id="noteStat">0</div><div class="hint">Across your modules</div></div>
+</div>
+
+<section class="ai">
+  <div class="ai-head"><div class="ai-title"><div class="ai-badge">✦</div><div><h2>UniOS Assistant</h2><small>Uses your deadlines, grades and notes to help you plan.</small></div></div></div>
+  <div class="ask"><input id="q" placeholder="Ask something like: what should I work on tonight?" aria-label="Ask UniOS Assistant"><button id="go">Ask assistant</button></div>
+  <div class="chips">
+    <button data-q="lazy">Pick one task</button><button data-q="due">What's due?</button><button data-q="Plan my week: order my open deadlines by urgency and give me a realistic day-by-day plan.">Plan my week</button><button data-q="Give me a 3-task starter list for today, easiest first, so I can get going.">Get me started</button><button data-q="Summarise my notes in short bullet points, grouped by module.">Summarise notes</button><button data-q="Quiz me with 5 short questions based on my notes, one at a time, no answers yet.">Quiz me</button>
+  </div>
+  <div id="out" aria-live="polite"></div>
+</section>
+
+<section class="section focus"><div class="clock" id="clock">25:00</div><select id="mins" aria-label="Focus length"><option value="25">25 min</option><option value="15">15 min</option><option value="45">45 min</option></select><button class="btn" id="fgo">Start focus</button><button class="ghost" id="frs">Reset</button><span class="meta grow" id="flabel">Pick a task, then start the timer.</span></section>
+
+<section class="section cal-wrap"><div class="calhead"><div><h2>This week</h2><span class="section-sub" id="crange"></span></div><div class="cal-nav"><button id="cp">Previous</button><button id="cn">Next</button></div></div><div class="cal" id="cal"></div></section>
+
+<div class="toolbar"><input id="search" placeholder="Search deadlines and notes" aria-label="Search"><select id="modf" aria-label="Filter by module"><option value="">All modules</option></select><span class="stat" id="stat"></span><span class="stat" id="msg"></span></div>
+
+<div class="grid">
+<section class="section"><div class="section-title"><div><h2>Deadlines</h2><span class="section-sub">What needs your attention</span></div></div>
+<div class="add"><input id="tt" class="full" placeholder="e.g. Marketing essay"><input id="tm" list="mods" placeholder="Module"><input id="td" type="date" aria-label="Due date"><select id="tp" aria-label="Priority"><option value="med">Medium priority</option><option value="high">High priority</option><option value="low">Low priority</option></select><button class="btn" id="addt">Add deadline</button></div><div id="tasks"></div></section>
+
+<section class="section"><div class="section-title"><div><h2>Notes</h2><span class="section-sub">Keep your learning in one place</span></div></div>
+<div class="add"><input id="nt" class="full" placeholder="Note title"><input id="nm" list="mods" class="full" placeholder="Module"><textarea id="nb" class="full" placeholder="Write or paste your notes"></textarea><button class="btn" id="addn">Save note</button></div><div id="notes"></div></section>
+
+<section class="section full"><div class="section-title"><div><h2>Grades</h2><span class="section-sub">Track assessments and your running average</span></div></div><div class="add" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr))"><input id="gm" list="mods" placeholder="Module"><input id="gn" placeholder="Assessment"><input id="gw" type="number" min="0" max="100" placeholder="Weight %"><input id="gs" type="number" min="0" max="100" placeholder="Mark % (if known)"><button class="btn" id="addg">Add assessment</button></div><div id="grades"></div></section>
+</div>
+<datalist id="mods"></datalist>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+
+let K=null;
+const SUPABASE_URL='https://mmbitfenzovzzdeatbpt.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_mbd5SUlqUn9bT8TwUaV6KA_4cknH2dT';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+let S={tasks:[],notes:[],grades:[]},editing=null,sample=null,wk=0,user=null,saveTimer=null;
+function blankWorkspace(){return {tasks:[],notes:[],grades:[]}}
+S=blankWorkspace();
+S.grades=S.grades||[];
+const PAL=['#2563EB','#0F766E','#B45309','#9333EA','#BE123C','#4D7C0F','#0E7490','#A21CAF'];
+const mc=m=>{let x=0;for(const c of m||'-')x=(x*31+c.charCodeAt(0))%997;return PAL[x%PAL.length]};
+const dot=m=>`<i class="dot" style="background:${mc(m)}"></i>`;
+const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const localSave=()=>{if(!K)return;try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+function setUserStorageKey(){K=user?`unios_local_cache_${user.id}`:null;}
+function localLoad(){if(!K)return false;try{const r=localStorage.getItem(K);if(r){const d=JSON.parse(r);S={tasks:Array.isArray(d.tasks)?d.tasks:[],notes:Array.isArray(d.notes)?d.notes:[],grades:Array.isArray(d.grades)?d.grades:[]};return true}}catch(e){}return false;}
+async function cloudSave(){
+  if(!user)return;
+  const {error}=await sb.from('user_workspaces').upsert({user_id:user.id,data:S,updated_at:new Date().toISOString()},{onConflict:'user_id'});
+  if(error)console.error('UniOS cloud save failed:',error);
+}
+function save(){
+  localSave();
+  if(user){clearTimeout(saveTimer);saveTimer=setTimeout(cloudSave,250)}
+}
+async function cloudLoad(){
+  if(!user)return;
+  const {data,error}=await sb.from('user_workspaces').select('data').eq('user_id',user.id).maybeSingle();
+  if(error){console.error('UniOS cloud load failed:',error);return}
+  if(data&&data.data){
+    S={tasks:Array.isArray(data.data.tasks)?data.data.tasks:[],notes:Array.isArray(data.data.notes)?data.data.notes:[],grades:Array.isArray(data.data.grades)?data.data.grades:[]};
+  }else{
+    // A brand-new account must start empty. Never carry another user's in-memory data into a new workspace.
+    S=blankWorkspace();
+    await cloudSave();
+  }
+  localSave();render();
+}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d};
+const daysTo=s=>Math.round((new Date(s+'T00:00:00')-today())/864e5);
+const when=n=>n<0?`${-n} day${n<-1?'s':''} overdue`:n===0?'Due today':n===1?'Due tomorrow':`Due in ${n} days`;
+const cls=n=>n<0?'late':n<=2?'soon':'';
+
+function mods(){return [...new Set([...S.tasks,...S.notes].map(x=>x.m).filter(Boolean))].sort()}
+function match(x,q,m){return (!m||x.m===m)&&(!q||(x.t+' '+(x.m||'')+' '+(x.b||'')).toLowerCase().includes(q))}
+
+function render(){
+  const q=$('search').value.trim().toLowerCase(),mf=$('modf').value;
+  const ml=mods();
+  $('mods').innerHTML=ml.map(m=>`<option value="${esc(m)}">`).join('');
+  $('modf').innerHTML='<option value="">All modules</option>'+ml.map(m=>`<option ${m===mf?'selected':''} value="${esc(m)}">${esc(m)}</option>`).join('');
+  const open=S.tasks.filter(t=>!t.done),wk=open.filter(t=>t.d&&daysTo(t.d)<=7).length;
+  $('stat').textContent=`${open.length} open · ${wk} due this week`;
+  $('openStat').textContent=open.length;
+  $('weekStat').textContent=wk;
+  $('noteStat').textContent=S.notes.length;
+  const marked=S.grades.filter(g=>g.s!==''&&g.s!=null&&g.w);
+  const totalW=marked.reduce((x,g)=>x+Number(g.w),0), totalPts=marked.reduce((x,g)=>x+Number(g.w)*Number(g.s)/100,0);
+  $('avgStat').textContent=totalW?((totalPts/totalW)*100).toFixed(1)+'%':'—';
+  const ts=S.tasks.filter(t=>match(t,q,mf)).sort((a,b)=>(a.done-b.done)||((a.d||'9')<(b.d||'9')?-1:1));
+  $('tasks').innerHTML=ts.length?ts.map(t=>{const n=t.d?daysTo(t.d):null;
+    return `<div class="row ${t.p} ${t.done?'done':''}"><button class="chk" data-a="tog" data-id="${t.id}" aria-label="Mark done">${t.done?'✓':''}</button><div class="grow"><div class="t">${esc(t.t)}</div><div class="meta">${dot(t.m)}${esc(t.m||'No module')}${n!==null?` · <span class="${t.done?'':cls(n)}">${when(n)}</span>`:''}</div></div><button class="ghost" data-a="del" data-id="${t.id}" aria-label="Delete deadline">✕</button></div>`}).join(''):'<div class="empty">No deadlines yet. Add your first one above.</div>';
+  const ns=S.notes.filter(n=>match(n,q,mf)).sort((a,b)=>b.ts-a.ts);
+  $('notes').innerHTML=ns.length?ns.map(n=>`<div class="note"><div class="t">${esc(n.t)}</div><div class="meta">${dot(n.m)}${esc(n.m||'No module')}</div><div class="b">${esc(n.b)}</div><button class="ghost" data-a="edit" data-id="${n.id}">Edit</button><button class="ghost" data-a="deln" data-id="${n.id}">Delete</button></div>`).join(''):'<div class="empty">No notes yet. Paste your lecture notes above.</div>';
+  renderCal();renderGrades();
+}
+
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const id=b.dataset.id,a=b.dataset.a;
+  if(a==='tog'){const t=S.tasks.find(x=>x.id===id);t.done=!t.done}
+  if(a==='del')S.tasks=S.tasks.filter(x=>x.id!==id);
+  if(a==='delg')S.grades=S.grades.filter(x=>x.id!==id);
+  if(a==='deln')S.notes=S.notes.filter(x=>x.id!==id);
+  if(a==='edit'){const n=S.notes.find(x=>x.id===id);$('nt').value=n.t;$('nm').value=n.m||'';$('nb').value=n.b;editing=id;$('addn').textContent='Update note';$('nt').focus();return}
+  save();render();
+});
+$('addt').onclick=()=>{const t=$('tt').value.trim();if(!t){$('tt').focus();return}
+  S.tasks.push({id:uid(),t,m:$('tm').value.trim(),d:$('td').value,p:$('tp').value,done:false});
+  $('tt').value='';$('td').value='';save();render()};
+$('tt').addEventListener('keydown',e=>{if(e.key==='Enter')$('addt').click()});
+$('addn').onclick=()=>{const t=$('nt').value.trim(),b=$('nb').value.trim();if(!t&&!b){$('nt').focus();return}
+  const n={id:editing||uid(),t:t||'Untitled note',m:$('nm').value.trim(),b,ts:Date.now()};
+  S.notes=S.notes.filter(x=>x.id!==editing);S.notes.push(n);editing=null;
+  $('nt').value=$('nm').value=$('nb').value='';$('addn').textContent='Save note';save();render()};
+$('search').oninput=render;$('modf').onchange=render;
+
+function brief(){
+  const open=S.tasks.filter(t=>!t.done&&t.d).sort((a,b)=>a.d<b.d?-1:1);
+  const undated=S.tasks.filter(t=>!t.done&&!t.d);
+  if(!open.length&&!undated.length)return 'Nothing open. Add a deadline and I\'ll keep track of it.';
+  const line=t=>`• ${t.t}${t.m?' ('+t.m+')':''} - ${when(daysTo(t.d)).toLowerCase()}`;
+  const g=(f)=>open.filter(t=>f(daysTo(t.d)));
+  const parts=[];
+  const late=g(n=>n<0),now=g(n=>n>=0&&n<=1),wk=g(n=>n>=2&&n<=7);
+  if(late.length)parts.push('Overdue, sort these first:\n'+late.map(line).join('\n'));
+  if(now.length)parts.push('Today and tomorrow:\n'+now.map(line).join('\n'));
+  if(wk.length)parts.push('Later this week:\n'+wk.map(line).join('\n'));
+  if(!late.length&&!now.length&&!wk.length&&open.length)parts.push('Nothing in the next week. Next up:\n'+line(open[0]));
+  if(undated.length)parts.push(`${undated.length} task${undated.length>1?'s have':' has'} no date yet.`);
+  return parts.join('\n\n');
+}
+function ctx(){return JSON.stringify({today:today().toDateString(),deadlines:S.tasks.map(t=>({title:t.t,module:t.m,due:t.d,priority:t.p,done:t.done})),grades:S.grades,notes:S.notes.map(n=>({title:n.t,module:n.m,text:n.b.slice(0,700)}))})}
+async function ask(q){
+  const out=$('out');out.style.display='block';
+  if(q==='due'){out.textContent=brief();return}
+  if(q==='lazy'){out.textContent=lazy();return}
+  if(!sample){out.textContent='AI answers are not available in this view, so here is your quick brief:\n\n'+brief();return}
+  out.textContent='Thinking...';
+  try{
+    const r=await sample('You are UniOS Assistant, a friendly study assistant for a busy, slightly lazy university student. Use only the data below. Be concrete, short (under 180 words), encouraging, and start with the single most useful next action. Plain text, short lists allowed.\n\nDATA:\n'+ctx()+'\n\nREQUEST: '+q,{onText:({text})=>{out.textContent=text},cache:false});
+    out.textContent=r.text;
+  }catch(e){out.textContent=(e&&e.code==='rate_limited'?'The assistant is busy. Try again in a minute.':'The assistant could not answer. Here is your quick brief:\n\n'+brief())}
+}
+document.querySelectorAll('.chips button').forEach(b=>b.onclick=()=>ask(b.dataset.q));
+const go=()=>{const v=$('q').value.trim();if(v){ask(v)}};
+$('go').onclick=go;$('q').addEventListener('keydown',e=>{if(e.key==='Enter')go()});
+if(window.claude&&window.claude.use)window.claude.use('sample').then(s=>{sample=s}).catch(()=>{});
+
+function renderCal(){
+  const t0=today(),dow=(t0.getDay()+6)%7,st=new Date(t0);st.setDate(t0.getDate()-dow+wk*7);
+  const days=[...Array(7)].map((_,i)=>{const d=new Date(st);d.setDate(st.getDate()+i);return d});
+  $('crange').textContent=days[0].toLocaleDateString('en-GB',{day:'numeric',month:'short'})+' to '+days[6].toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+  $('cal').innerHTML=days.map(d=>{const k=iso(d),ev=S.tasks.filter(t=>t.d===k);
+    return `<div class="day ${k===iso(t0)?'today':''}"><h3>${d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric'})}</h3>${ev.map(t=>`<div class="ev ${t.done?'done':''}" style="background:${mc(t.m)}">${esc(t.t)}</div>`).join('')}</div>`}).join('');
+}
+$('cp').onclick=()=>{wk--;renderCal()};$('cn').onclick=()=>{wk++;renderCal()};
+function renderGrades(){
+  const by={};S.grades.forEach(g=>{const k=g.m||'No module';(by[k]=by[k]||[]).push(g)});
+  const keys=Object.keys(by).sort();
+  $('grades').innerHTML=keys.length?keys.map(m=>{const a=by[m],d=a.filter(g=>g.s!==''&&g.s!=null),dw=d.reduce((x,g)=>x+g.w,0),pts=d.reduce((x,g)=>x+g.w*g.s/100,0),rem=100-dw;
+    let need='';if(dw&&rem>0){const n=(70-pts)/rem*100;need=n<=0?'A 70% is already secured.':n>100?'A 70% is out of reach with the remaining marks.':`You need ${Math.ceil(n)}% on the remaining ${rem}% to reach a 70%.`}
+    return `<div class="gm"><div class="t">${dot(m)}${esc(m)} <span class="meta">Average so far: ${dw?(pts/dw*100).toFixed(1)+'%':'no marks yet'}</span></div>${need?`<div class="meta">${need}</div>`:''}${a.map(g=>`<div class="gr"><span class="grow">${esc(g.n)}</span><span class="meta">${g.w}% weight</span><b>${g.s===''||g.s==null?'Pending':g.s+'%'}</b><button class="ghost" data-a="delg" data-id="${g.id}" aria-label="Delete">✕</button></div>`).join('')}</div>`}).join(''):'<div class="empty">Add an assessment with its weight to see your running average.</div>';
+}
+$('addg').onclick=()=>{const n=$('gn').value.trim(),w=parseFloat($('gw').value);if(!n||isNaN(w)){$('gn').focus();return}
+  const s=$('gs').value===''?'':parseFloat($('gs').value);
+  S.grades.push({id:uid(),m:$('gm').value.trim(),n,w,s});$('gn').value=$('gw').value=$('gs').value='';save();render()};
+function lazy(){
+  const open=S.tasks.filter(t=>!t.done);if(!open.length)return 'Nothing open. You are all clear.';
+  const pr={high:0,med:1,low:2},k=t=>t.d||'9999';
+  open.sort((a,b)=>(k(a)<k(b)?-1:k(a)>k(b)?1:0)||pr[a.p]-pr[b.p]);const t=open[0];
+  $('flabel').textContent='Working on: '+t.t;
+  return `Do this one: ${t.t}${t.m?' ('+t.m+')':''}${t.d?', '+when(daysTo(t.d)).toLowerCase():''}.\nForget the rest for now. Give it one focus session and press Start focus.`;
+}
+let tl=25*60,end=0,iv=null;
+const fm=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function showClock(){$('clock').textContent=fm(tl);document.title=iv?fm(tl)+' UniOS':'UniOS'}
+$('fgo').onclick=()=>{
+  if(iv){clearInterval(iv);iv=null;$('fgo').textContent='Resume';showClock();return}
+  if(tl<=0)tl=$('mins').value*60;end=Date.now()+tl*1000;$('fgo').textContent='Pause';
+  iv=setInterval(()=>{tl=Math.max(0,Math.round((end-Date.now())/1000));if(tl===0){clearInterval(iv);iv=null;$('fgo').textContent='Start focus';$('flabel').textContent='Session done. Take a 5 minute break.'}showClock()},500);showClock();
+};
+$('frs').onclick=()=>{clearInterval(iv);iv=null;tl=$('mins').value*60;$('fgo').textContent='Start focus';showClock()};
+$('mins').onchange=()=>{if(!iv){tl=$('mins').value*60;showClock()}};
+$('exp').onclick=()=>{const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='unios-backup-'+iso(today())+'.json';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);$('msg').textContent='Backup downloaded.'};
+$('imp').onclick=()=>$('file').click();
+$('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.tasks)||!Array.isArray(d.notes))throw 0;
+    S={tasks:d.tasks,notes:d.notes,grades:Array.isArray(d.grades)?d.grades:[]};save();render();$('msg').textContent=`Imported ${S.tasks.length} deadlines, ${S.notes.length} notes.`}catch(x){$('msg').textContent='That file is not a UniOS backup.'}};
+  r.readAsText(f);e.target.value=''};
+
+
+const authMode={signup:false};
+function authMessage(text,type='error'){const el=$('authMsg');el.textContent=text;el.className='auth-msg '+type;el.style.display='block'}
+function clearAuthMessage(){const el=$('authMsg');el.style.display='none';el.textContent=''}
+function setAuthMode(signup){
+  authMode.signup=signup;clearAuthMessage();
+  $('authTitle').textContent=signup?'Create your UniOS account':'Welcome back';
+  $('authSubtitle').textContent=signup?'Create an account to save your dashboard across devices.':'Log in to access your personal UniOS dashboard.';
+  $('nameWrap').style.display=signup?'block':'none';
+  $('authName').required=signup;
+  $('authPassword').autocomplete=signup?'new-password':'current-password';
+  $('authSubmit').textContent=signup?'Create account':'Log in';
+  $('authSwitchText').textContent=signup?'Already have an account?':'New to UniOS?';
+  $('authSwitch').textContent=signup?'Log in':'Create an account';
+}
+$('authSwitch').onclick=()=>setAuthMode(!authMode.signup);
+$('authForm').onsubmit=async e=>{
+  e.preventDefault();clearAuthMessage();
+  if(SUPABASE_URL.includes('PASTE_')){authMessage('Connect UniOS to Supabase first. Add your Supabase URL and publishable key in index.html.');return}
+  const email=$('authEmail').value.trim(),password=$('authPassword').value,name=$('authName').value.trim();
+  $('authSubmit').disabled=true;$('authSubmit').textContent=authMode.signup?'Creating...':'Logging in...';
+  let result;
+  if(authMode.signup) result=await sb.auth.signUp({email,password,options:{data:{full_name:name}}});
+  else result=await sb.auth.signInWithPassword({email,password});
+  $('authSubmit').disabled=false;$('authSubmit').textContent=authMode.signup?'Create account':'Log in';
+  if(result.error){authMessage(result.error.message);return}
+  if(authMode.signup&&!result.data.session){authMessage('Account created. Check your email to confirm your account, then log in.','ok');return}
+  await handleSession(result.data.session);
+};
+async function handleSession(session){
+  user=session?.user||null;
+  setUserStorageKey();
+  if(!user){
+    $('landingPage').style.display='block';$('authScreen').style.display='none';$('app').style.display='none';$('accountEmail').textContent='';return;
+  }
+  $('landingPage').style.display='none';$('authScreen').style.display='none';$('app').style.display='block';$('accountEmail').textContent=user.email||'';
+  const firstName=(user.user_metadata?.full_name||'').trim().split(/\s+/)[0];
+  $('welcomeHeading').textContent=firstName?`Good to see you, ${firstName} 👋`:'Good to see you.';
+  await cloudLoad();
+}
+$('signOut').onclick=async()=>{await sb.auth.signOut();user=null;setAuthMode(false);$('authEmail').value='';$('authPassword').value='';$('app').style.display='none';$('authScreen').style.display='none';$('landingPage').style.display='block'};
+sb.auth.onAuthStateChange((_event,session)=>{if(session&&session.user){handleSession(session)}else{user=null;$('app').style.display='none';$('authScreen').style.display='none';$('landingPage').style.display='block'}});
+sb.auth.getSession().then(({data})=>handleSession(data.session));
+
+
+function showLandPage(page){
+  document.querySelectorAll('.v3-page').forEach(p=>p.classList.toggle('active',p.dataset.page===page));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('[data-land]').forEach(b=>b.addEventListener('click',()=>showLandPage(b.dataset.land)));
+document.querySelectorAll('#landingSignup,#landingSignupHero,#landingSignupAbout,#landingSignupPrice,#landingSignupFooter').forEach(b=>b&&b.addEventListener('click',()=>{setAuthMode(true);$('landingPage').style.display='none';$('authScreen').style.display='grid';}));
+document.querySelectorAll('#landingLogin').forEach(b=>b.addEventListener('click',()=>{setAuthMode(false);$('landingPage').style.display='none';$('authScreen').style.display='grid';}));
+
+document.querySelectorAll('[data-demo]').forEach(b=>b.onclick=()=>{
+  const demo={
+    tasks:'Example: “Sports Marketing essay” → High priority → Due Friday → break the task into research, structure, writing and editing.',
+    grades:'Example: add a 30% assessment at 68% → UniOS updates your running average and shows what you need on remaining work.',
+    ai:'Example: “What should I work on tonight?” → UniOS looks at your open deadlines and gives you a practical next action.'
+  };
+  const box=$('landDemo');box.textContent=demo[b.dataset.demo];box.classList.add('show');
+});
+function openAuth(signup){$('landingPage').style.display='none';$('authScreen').style.display='grid';setAuthMode(signup)}
+$('landingLogin').onclick=()=>openAuth(false);
+$('landingSignup').onclick=()=>openAuth(true);
+$('landingSignupBottom').onclick=()=>openAuth(true);
+
+render();
